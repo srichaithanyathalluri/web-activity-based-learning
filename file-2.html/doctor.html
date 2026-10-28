@@ -1,0 +1,592 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediCare | Doctor Appointment Booking</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f3f8fc;
+    color: #243447;
+    line-height: 1.6;
+}
+
+header {
+    background: white;
+    padding: 18px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    box-shadow: 0 3px 12px #00000010;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: bold;
+    color: #087e8b;
+}
+
+nav {
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+}
+
+nav a {
+    text-decoration: none;
+    color: #243447;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #087e8b;
+}
+
+.hero {
+    padding: 65px 7%;
+    background: linear-gradient(120deg, #d9f4f5, #e9f0ff);
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: clamp(30px, 5vw, 46px);
+    color: #075b70;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    max-width: 650px;
+    margin: 0 auto 25px;
+    color: #506577;
+}
+
+.btn {
+    display: inline-block;
+    background: #087e8b;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 7px;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.btn:hover {
+    background: #065e68;
+}
+
+section {
+    padding: 45px 7%;
+    scroll-margin-top: 95px;
+}
+
+.section-title {
+    text-align: center;
+    color: #075b70;
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #687b8c;
+    margin-bottom: 30px;
+}
+
+.doctor-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.doctor-card {
+    background: white;
+    padding: 25px;
+    text-align: center;
+    border-radius: 14px;
+    box-shadow: 0 5px 20px #20364a0c;
+    transition: 0.3s;
+}
+
+.doctor-card:hover {
+    transform: translateY(-5px);
+}
+
+.doctor-icon {
+    width: 100px;
+    height: 100px;
+    background: #d9f4f5;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 53px;
+}
+
+.doctor-card h3 {
+    margin-bottom: 6px;
+}
+
+.specialty {
+    color: #087e8b;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.doctor-card p {
+    color: #607283;
+    margin: 7px 0;
+    font-size: 14px;
+}
+
+.doctor-card .btn {
+    margin-top: 15px;
+}
+
+.booking-section {
+    background: #eaf4f8;
+}
+
+.booking-form {
+    max-width: 800px;
+    margin: auto;
+    background: white;
+    padding: 30px;
+    border-radius: 14px;
+    box-shadow: 0 5px 20px #20364a0c;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.form-group.full {
+    grid-column: 1 / -1;
+}
+
+label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #cbd8e0;
+    border-radius: 7px;
+    font-size: 15px;
+    background: white;
+    color: #243447;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: 2px solid #80cbd0;
+    border-color: #087e8b;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 90px;
+}
+
+.hint {
+    font-size: 12px;
+    color: #607283;
+}
+
+.submit-btn {
+    width: 100%;
+    margin-top: 25px;
+}
+
+.confirmation {
+    display: none;
+    margin-top: 20px;
+    padding: 18px;
+    border-radius: 8px;
+    background: #e2f7eb;
+    color: #175b37;
+    overflow-wrap: anywhere;
+}
+
+footer {
+    background: #153847;
+    color: white;
+    text-align: center;
+    padding: 28px 15px;
+}
+
+footer p {
+    color: #d2e2e8;
+    margin-top: 5px;
+}
+
+@media (max-width: 800px) {
+    header {
+        justify-content: center;
+    }
+
+    nav {
+        justify-content: center;
+    }
+
+    .doctor-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 540px) {
+    header {
+        padding: 15px 4%;
+    }
+
+    nav {
+        gap: 13px;
+        font-size: 14px;
+    }
+
+    .doctor-grid,
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group.full {
+        grid-column: auto;
+    }
+
+    section {
+        padding: 35px 5%;
+    }
+
+    .booking-form {
+        padding: 22px 17px;
+    }
+
+    .hero {
+        padding: 45px 5%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">✚ MediCare</div>
+
+    <nav aria-label="Main navigation">
+        <a href="#home">Home</a>
+        <a href="#doctors">Our Doctors</a>
+        <a href="#booking">Book Appointment</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</header>
+
+<main>
+
+<section class="hero" id="home">
+    <h1>Your Health, Our Priority</h1>
+    <p>
+        Find the right doctor, check consultation timings, and
+        schedule your appointment with ease.
+    </p>
+    <a href="#doctors" class="btn">Explore Doctors</a>
+</section>
+
+<section id="doctors">
+    <h2 class="section-title">Meet Our Doctors</h2>
+    <p class="subtitle">Choose a specialist for your healthcare needs.</p>
+
+    <div class="doctor-grid">
+
+        <article class="doctor-card">
+            <div class="doctor-icon" aria-hidden="true">👨‍⚕️</div>
+            <h3>Dr. Rahul Sharma</h3>
+            <div class="specialty">Cardiologist</div>
+            <p>Experience: 12 years</p>
+            <p>Consultation: Mon–Fri</p>
+            <p>Timings: 9:00 AM – 1:00 PM</p>
+            <p>Fee: ₹600</p>
+            <button class="btn" onclick="selectDoctor('Dr. Rahul Sharma')">
+                Book Appointment
+            </button>
+        </article>
+
+        <article class="doctor-card">
+            <div class="doctor-icon" aria-hidden="true">👩‍⚕️</div>
+            <h3>Dr. Priya Reddy</h3>
+            <div class="specialty">Dermatologist</div>
+            <p>Experience: 8 years</p>
+            <p>Consultation: Mon–Sat</p>
+            <p>Timings: 10:00 AM – 2:00 PM</p>
+            <p>Fee: ₹500</p>
+            <button class="btn" onclick="selectDoctor('Dr. Priya Reddy')">
+                Book Appointment
+            </button>
+        </article>
+
+        <article class="doctor-card">
+            <div class="doctor-icon" aria-hidden="true">👨‍⚕️</div>
+            <h3>Dr. Arjun Kumar</h3>
+            <div class="specialty">General Physician</div>
+            <p>Experience: 10 years</p>
+            <p>Consultation: Mon–Sat</p>
+            <p>Timings: 4:00 PM – 8:00 PM</p>
+            <p>Fee: ₹400</p>
+            <button class="btn" onclick="selectDoctor('Dr. Arjun Kumar')">
+                Book Appointment
+            </button>
+        </article>
+
+    </div>
+</section>
+
+<section class="booking-section" id="booking">
+    <h2 class="section-title">Book Your Appointment</h2>
+    <p class="subtitle">Fill in the details below to request a consultation.</p>
+
+    <form class="booking-form" id="appointment-form">
+
+        <div class="form-grid">
+
+            <div class="form-group">
+                <label for="patient-name">Patient Full Name *</label>
+                <input
+                    type="text"
+                    id="patient-name"
+                    name="patientName"
+                    placeholder="Enter your full name"
+                    autocomplete="name"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="you@example.com"
+                    autocomplete="email"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Mobile Number *</label>
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="Enter 10-digit mobile number"
+                    inputmode="numeric"
+                    pattern="[0-9]{10}"
+                    maxlength="10"
+                    autocomplete="tel"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="age">Age *</label>
+                <input
+                    type="number"
+                    id="age"
+                    name="age"
+                    min="1"
+                    max="120"
+                    placeholder="Enter age"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="doctor">Select Doctor *</label>
+                <select id="doctor" name="doctor" required>
+                    <option value="">Choose a doctor</option>
+                    <option value="Dr. Rahul Sharma">Dr. Rahul Sharma - Cardiologist</option>
+                    <option value="Dr. Priya Reddy">Dr. Priya Reddy - Dermatologist</option>
+                    <option value="Dr. Arjun Kumar">Dr. Arjun Kumar - General Physician</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="date">Appointment Date *</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+
+            <div class="form-group full">
+                <label for="slot">Available Appointment Slot *</label>
+                <select id="slot" name="slot" required>
+                    <option value="">Select a doctor first</option>
+                </select>
+                <span class="hint">
+                    Slots are illustrative. Real availability must be verified with the clinic.
+                </span>
+            </div>
+
+            <div class="form-group full">
+                <label for="reason">Reason for Visit</label>
+                <textarea
+                    id="reason"
+                    name="reason"
+                    placeholder="Briefly describe the reason for your visit (optional)"></textarea>
+            </div>
+
+        </div>
+
+        <button type="submit" class="btn submit-btn">
+            Confirm Appointment Request
+        </button>
+
+        <div class="confirmation" id="confirmation" role="status" aria-live="polite"></div>
+
+    </form>
+</section>
+
+<section id="contact">
+    <h2 class="section-title">Contact Us</h2>
+    <p class="subtitle">We're here to help you with appointment enquiries.</p>
+    <div style="text-align:center; line-height:2;">
+        <p>📍 MediCare Clinic, Vijayawada, Andhra Pradesh</p>
+        <p>📞 +91 98765 43210</p>
+        <p>✉️ contact@medicare.example</p>
+        <p>🕒 Monday–Saturday: 9:00 AM – 8:00 PM</p>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <h3>✚ MediCare Clinic</h3>
+    <p>Your health matters to us.</p>
+    <p>© 2026 MediCare. Educational demo website.</p>
+</footer>
+
+<script>
+const doctorSelect = document.getElementById("doctor");
+const dateInput = document.getElementById("date");
+const slotSelect = document.getElementById("slot");
+const form = document.getElementById("appointment-form");
+const confirmation = document.getElementById("confirmation");
+
+const doctorSlots = {
+    "Dr. Rahul Sharma": [
+        "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM"
+    ],
+    "Dr. Priya Reddy": [
+        "10:00 AM", "11:00 AM", "12:00 PM", "01:00 PM"
+    ],
+    "Dr. Arjun Kumar": [
+        "04:00 PM", "05:00 PM", "06:00 PM", "07:00 PM"
+    ]
+};
+
+// Set today's date as the earliest selectable date.
+const today = new Date();
+const localToday = [
+    today.getFullYear(),
+    String(today.getMonth() + 1).padStart(2, "0"),
+    String(today.getDate()).padStart(2, "0")
+].join("-");
+
+dateInput.min = localToday;
+
+function updateSlots() {
+    const doctor = doctorSelect.value;
+    const date = dateInput.value;
+
+    slotSelect.innerHTML = "";
+
+    if (!doctor || !date) {
+        slotSelect.add(new Option("Select a doctor and date first", ""));
+        return;
+    }
+
+    const selectedDate = new Date(date + "T12:00:00");
+    const day = selectedDate.getDay();
+
+    if (day === 0) {
+        slotSelect.add(new Option("Clinic closed on Sundays", ""));
+        return;
+    }
+
+    let slots = doctorSlots[doctor];
+
+    if (doctor === "Dr. Rahul Sharma" && day === 6) {
+        slotSelect.add(new Option("Doctor unavailable on Saturdays", ""));
+        return;
+    }
+
+    slotSelect.add(new Option("Choose an appointment slot", ""));
+
+    slots.forEach(time => {
+        slotSelect.add(new Option(time, time));
+    });
+}
+
+function selectDoctor(name) {
+    doctorSelect.value = name;
+    updateSlots();
+
+    document.getElementById("booking").scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+doctorSelect.addEventListener("change", updateSlots);
+dateInput.addEventListener("change", updateSlots);
+
+form.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    if (!form.reportValidity()) {
+        return;
+    }
+
+    const patient = document.getElementById("patient-name").value.trim();
+    const doctor = doctorSelect.value;
+    const date = dateInput.value;
+    const slot = slotSelect.value;
+
+    if (!slot) {
+        alert("Please select an available appointment slot.");
+        return;
+    }
+
+    confirmation.style.display = "block";
+    confirmation.textContent =
+        "Demo request prepared for " + patient +
+        ". Doctor: " + doctor +
+        ". Date: " + date +
+        ". Time: " + slot +
+        ". This request has not been sent to a real clinic.";
+
+    confirmation.scrollIntoView({ behavior: "smooth", block: "nearest" });
+});
+</script>
+
+</body>
+</html>
