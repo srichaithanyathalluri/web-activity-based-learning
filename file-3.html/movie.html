@@ -1,0 +1,735 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CineWorld | Movie Reviews</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #101116;
+    color: #f5f5f5;
+}
+
+header {
+    background: #191a22;
+    padding: 20px 7%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 18px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    border-bottom: 1px solid #30313b;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: bold;
+    color: #ffcc45;
+}
+
+nav {
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+}
+
+nav a {
+    text-decoration: none;
+    color: #eee;
+    font-size: 15px;
+}
+
+nav a:hover {
+    color: #ffcc45;
+}
+
+.hero {
+    padding: 75px 8%;
+    background: linear-gradient(120deg, #302039, #171922 75%);
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: clamp(34px, 5vw, 55px);
+    margin-bottom: 18px;
+}
+
+.hero h1 span {
+    color: #ffcc45;
+}
+
+.hero p {
+    color: #c5c5ce;
+    max-width: 650px;
+    margin: 0 auto 25px;
+    line-height: 1.8;
+}
+
+.search-box {
+    display: flex;
+    max-width: 500px;
+    margin: auto;
+    gap: 10px;
+}
+
+.search-box input {
+    flex: 1;
+    min-width: 0;
+    padding: 14px;
+    border: 1px solid #41424d;
+    border-radius: 8px;
+    background: #252630;
+    color: white;
+    font-size: 15px;
+}
+
+.search-box button {
+    padding: 14px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #ffcc45;
+    color: #171717;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+section {
+    padding: 45px 7%;
+    scroll-margin-top: 95px;
+}
+
+.section-heading {
+    font-size: 29px;
+    margin-bottom: 10px;
+}
+
+.section-subtitle {
+    color: #a7a8b3;
+    margin-bottom: 28px;
+}
+
+.filters {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.filter-btn {
+    border: 1px solid #41424d;
+    color: #eee;
+    background: #20212a;
+    padding: 10px 17px;
+    border-radius: 22px;
+    cursor: pointer;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+    background: #ffcc45;
+    color: #191919;
+    border-color: #ffcc45;
+}
+
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 25px;
+}
+
+.movie-card {
+    background: #1b1c25;
+    border: 1px solid #2d2e38;
+    border-radius: 14px;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.movie-card:hover {
+    transform: translateY(-6px);
+    border-color: #ffcc45;
+    box-shadow: 0 12px 30px #00000035;
+}
+
+.poster {
+    width: 100%;
+    height: 340px;
+    object-fit: cover;
+    display: block;
+    background: #30313b;
+}
+
+.movie-info {
+    padding: 20px;
+}
+
+.movie-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.movie-title-row h3 {
+    font-size: 21px;
+}
+
+.rating {
+    color: #ffcc45;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.genre {
+    display: inline-block;
+    background: #34303b;
+    color: #e5c9ff;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 12px;
+    margin-bottom: 13px;
+}
+
+.movie-info p {
+    color: #b6b7c2;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 12px;
+}
+
+.movie-info strong {
+    color: #f4f4f6;
+}
+
+.details-btn {
+    width: 100%;
+    padding: 12px;
+    background: #ffcc45;
+    color: #1b1b1b;
+    border: none;
+    border-radius: 7px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.details-btn:hover {
+    background: #f3b817;
+}
+
+.no-results {
+    color: #c5c5ce;
+    text-align: center;
+    padding: 30px 0;
+    grid-column: 1 / -1;
+}
+
+.reviews-section {
+    background: #191a22;
+}
+
+.review-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.review-card {
+    padding: 23px;
+    background: #252630;
+    border-radius: 12px;
+    border: 1px solid #363743;
+}
+
+.review-card h3 {
+    margin-bottom: 12px;
+}
+
+.review-card p {
+    color: #c3c3cc;
+    line-height: 1.8;
+}
+
+.stars {
+    color: #ffcc45;
+    margin-bottom: 12px;
+}
+
+footer {
+    padding: 30px 7%;
+    background: #0b0c10;
+    text-align: center;
+    color: #a7a8b3;
+    line-height: 1.8;
+}
+
+footer strong {
+    color: #ffcc45;
+}
+
+dialog {
+    width: min(90%, 540px);
+    max-height: 85vh;
+    overflow-y: auto;
+    margin: auto;
+    padding: 28px;
+    background: #22232d;
+    color: white;
+    border: 1px solid #484955;
+    border-radius: 14px;
+}
+
+dialog::backdrop {
+    background: #000000bb;
+}
+
+dialog h2 {
+    color: #ffcc45;
+    margin-bottom: 16px;
+}
+
+dialog p {
+    color: #d0d0d8;
+    line-height: 1.8;
+    margin-bottom: 12px;
+}
+
+.close-btn {
+    background: #ffcc45;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 7px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+@media (max-width: 900px) {
+    .movie-grid,
+    .review-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .poster {
+        height: 300px;
+    }
+}
+
+@media (max-width: 560px) {
+    header {
+        justify-content: center;
+        padding: 17px 5%;
+    }
+
+    nav {
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .hero {
+        padding: 50px 5%;
+    }
+
+    section {
+        padding: 35px 5%;
+    }
+
+    .movie-grid,
+    .review-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .poster {
+        height: 380px;
+    }
+
+    .search-box {
+        flex-direction: column;
+    }
+
+    .search-box button {
+        width: 100%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">🎬 CineWorld</div>
+
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#movies">Movies</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#about">About</a>
+    </nav>
+</header>
+
+<main>
+<section class="hero" id="home">
+    <h1>Discover Your Next <span>Favourite Movie</span></h1>
+    <p>
+        Explore blockbuster films, discover talented casts,
+        read movie reviews, and find your next cinematic experience.
+    </p>
+
+    <div class="search-box">
+        <input type="search" id="search" placeholder="Search movies or genres..."
+               aria-label="Search movies">
+        <button onclick="searchMovies()">Search</button>
+    </div>
+</section>
+
+<section id="movies">
+    <h2 class="section-heading">Popular Movies</h2>
+    <p class="section-subtitle">Explore stories from around the world.</p>
+
+    <div class="filters">
+        <button class="filter-btn active" onclick="filterMovies('All', this)">All Movies</button>
+        <button class="filter-btn" onclick="filterMovies('Action', this)">Action</button>
+        <button class="filter-btn" onclick="filterMovies('Sci-Fi', this)">Sci-Fi</button>
+        <button class="filter-btn" onclick="filterMovies('Drama', this)">Drama</button>
+        <button class="filter-btn" onclick="filterMovies('Adventure', this)">Adventure</button>
+    </div>
+
+    <div class="movie-grid" id="movie-grid">
+
+        <article class="movie-card"
+                 data-title="interstellar"
+                 data-genre="Sci-Fi Adventure"
+                 data-movie="Interstellar">
+            <img class="poster"
+                 src="https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg"
+                 alt="Interstellar movie poster">
+            <div class="movie-info">
+                <div class="movie-title-row">
+                    <h3>Interstellar</h3>
+                    <span class="rating">★ 8.7</span>
+                </div>
+                <span class="genre">Sci-Fi / Adventure</span>
+                <p><strong>Release:</strong> 7 Nov 2014</p>
+                <p><strong>Cast:</strong> Matthew McConaughey, Anne Hathaway</p>
+                <p>A team travels beyond Earth in search of a future for humanity.</p>
+                <button class="details-btn" onclick="showDetails('Interstellar')">
+                    View Movie Details
+                </button>
+            </div>
+        </article>
+
+        <article class="movie-card"
+                 data-title="inception"
+                 data-genre="Action Sci-Fi"
+                 data-movie="Inception">
+            <img class="poster"
+                 src="https://image.tmdb.org/t/p/w500/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg"
+                 alt="Inception movie poster">
+            <div class="movie-info">
+                <div class="movie-title-row">
+                    <h3>Inception</h3>
+                    <span class="rating">★ 8.8</span>
+                </div>
+                <span class="genre">Action / Sci-Fi</span>
+                <p><strong>Release:</strong> 16 Jul 2010</p>
+                <p><strong>Cast:</strong> Leonardo DiCaprio, Joseph Gordon-Levitt</p>
+                <p>A skilled thief enters people's dreams to steal secrets and attempt an unusual mission.</p>
+                <button class="details-btn" onclick="showDetails('Inception')">
+                    View Movie Details
+                </button>
+            </div>
+        </article>
+
+        <article class="movie-card"
+                 data-title="the dark knight"
+                 data-genre="Action Drama"
+                 data-movie="The Dark Knight">
+            <img class="poster"
+                 src="https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg"
+                 alt="The Dark Knight movie poster">
+            <div class="movie-info">
+                <div class="movie-title-row">
+                    <h3>The Dark Knight</h3>
+                    <span class="rating">★ 9.0</span>
+                </div>
+                <span class="genre">Action / Drama</span>
+                <p><strong>Release:</strong> 18 Jul 2008</p>
+                <p><strong>Cast:</strong> Christian Bale, Heath Ledger</p>
+                <p>Batman faces a criminal mastermind threatening Gotham City.</p>
+                <button class="details-btn" onclick="showDetails('The Dark Knight')">
+                    View Movie Details
+                </button>
+            </div>
+        </article>
+
+        <article class="movie-card"
+                 data-title="avatar"
+                 data-genre="Sci-Fi Adventure"
+                 data-movie="Avatar">
+            <img class="poster"
+                 src="https://image.tmdb.org/t/p/w500/kyeqWdyUXW608qlYkRqosgbbJyK.jpg"
+                 alt="Avatar movie poster">
+            <div class="movie-info">
+                <div class="movie-title-row">
+                    <h3>Avatar</h3>
+                    <span class="rating">★ 7.9</span>
+                </div>
+                <span class="genre">Sci-Fi / Adventure</span>
+                <p><strong>Release:</strong> 18 Dec 2009</p>
+                <p><strong>Cast:</strong> Sam Worthington, Zoe Saldaña</p>
+                <p>A former Marine discovers the world and people of Pandora.</p>
+                <button class="details-btn" onclick="showDetails('Avatar')">
+                    View Movie Details
+                </button>
+            </div>
+        </article>
+
+        <article class="movie-card"
+                 data-title="the shawshank redemption"
+                 data-genre="Drama"
+                 data-movie="The Shawshank Redemption">
+            <img class="poster"
+                 src="https://image.tmdb.org/t/p/w500/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg"
+                 alt="The Shawshank Redemption movie poster">
+            <div class="movie-info">
+                <div class="movie-title-row">
+                    <h3>The Shawshank Redemption</h3>
+                    <span class="rating">★ 9.3</span>
+                </div>
+                <span class="genre">Drama</span>
+                <p><strong>Release:</strong> 23 Sep 1994</p>
+                <p><strong>Cast:</strong> Tim Robbins, Morgan Freeman</p>
+                <p>Two prisoners build a remarkable friendship through years of hardship.</p>
+                <button class="details-btn" onclick="showDetails('The Shawshank Redemption')">
+                    View Movie Details
+                </button>
+            </div>
+        </article>
+
+        <article class="movie-card"
+                 data-title="jurassic park"
+                 data-genre="Adventure Sci-Fi"
+                 data-movie="Jurassic Park">
+            <img class="poster"
+                 src="https://image.tmdb.org/t/p/w500/b1xCNnyrPebIc7EWNZIa6jhb1Ww.jpg"
+                 alt="Jurassic Park movie poster">
+            <div class="movie-info">
+                <div class="movie-title-row">
+                    <h3>Jurassic Park</h3>
+                    <span class="rating">★ 8.2</span>
+                </div>
+                <span class="genre">Adventure / Sci-Fi</span>
+                <p><strong>Release:</strong> 11 Jun 1993</p>
+                <p><strong>Cast:</strong> Sam Neill, Laura Dern</p>
+                <p>A dinosaur theme park visit becomes a fight for survival.</p>
+                <button class="details-btn" onclick="showDetails('Jurassic Park')">
+                    View Movie Details
+                </button>
+            </div>
+        </article>
+
+    </div>
+    <p id="no-results" class="no-results" hidden>No matching movies found.</p>
+</section>
+
+<section class="reviews-section" id="reviews">
+    <h2 class="section-heading">Critic Reviews</h2>
+    <p class="section-subtitle">Sample editorial reviews and rating displays.</p>
+
+    <div class="review-grid">
+        <article class="review-card">
+            <h3>Interstellar</h3>
+            <div class="stars">★★★★★ <strong>9/10</strong></div>
+            <p>
+                An ambitious science-fiction journey with impressive visuals,
+                emotional storytelling, and memorable music.
+            </p>
+        </article>
+
+        <article class="review-card">
+            <h3>Inception</h3>
+            <div class="stars">★★★★★ <strong>9/10</strong></div>
+            <p>
+                A clever thriller that combines imaginative ideas,
+                suspense, and a layered narrative.
+            </p>
+        </article>
+
+        <article class="review-card">
+            <h3>Avatar</h3>
+            <div class="stars">★★★★☆ <strong>8/10</strong></div>
+            <p>
+                A visually striking adventure with a richly imagined world
+                and large-scale action.
+            </p>
+        </article>
+    </div>
+</section>
+
+<section id="about">
+    <h2 class="section-heading">About CineWorld</h2>
+    <p class="section-subtitle">
+        CineWorld is a movie discovery website concept for exploring films,
+        cast details, genres, release dates, synopses, and sample reviews.
+        Ratings and reviews on this demo are illustrative and not live critic scores.
+    </p>
+</section>
+
+</main>
+
+<footer>
+    <strong>🎬 CineWorld</strong>
+    <p>Discover stories. Explore cinema.</p>
+    <p>© 2026 CineWorld | Educational project</p>
+</footer>
+
+<dialog id="movie-dialog">
+    <h2 id="dialog-title"></h2>
+    <div id="dialog-content"></div>
+    <button class="close-btn" onclick="document.getElementById('movie-dialog').close()">
+        Close
+    </button>
+</dialog>
+
+<script>
+const movieDetails = {
+    "Interstellar": {
+        genre: "Sci-Fi / Adventure",
+        release: "7 November 2014",
+        cast: "Matthew McConaughey, Anne Hathaway, Jessica Chastain",
+        synopsis: "A group of explorers ventures through a wormhole in search of a habitable world for humanity.",
+        rating: "8.7/10",
+        review: "An ambitious, emotional science-fiction adventure with striking visuals."
+    },
+    "Inception": {
+        genre: "Action / Sci-Fi",
+        release: "16 July 2010",
+        cast: "Leonardo DiCaprio, Joseph Gordon-Levitt, Elliot Page",
+        synopsis: "A specialist who steals secrets from dreams is offered a difficult mission involving an idea planted in someone's mind.",
+        rating: "8.8/10",
+        review: "A mind-bending thriller with inventive storytelling and suspense."
+    },
+    "The Dark Knight": {
+        genre: "Action / Drama",
+        release: "18 July 2008",
+        cast: "Christian Bale, Heath Ledger, Aaron Eckhart",
+        synopsis: "Batman confronts the Joker, whose criminal schemes test Gotham's people and its protectors.",
+        rating: "9.0/10",
+        review: "A tense superhero crime drama with compelling performances."
+    },
+    "Avatar": {
+        genre: "Sci-Fi / Adventure",
+        release: "18 December 2009",
+        cast: "Sam Worthington, Zoe Saldaña, Sigourney Weaver",
+        synopsis: "On Pandora, a former Marine becomes involved in a conflict over the moon's resources and its Indigenous inhabitants.",
+        rating: "7.9/10",
+        review: "An imaginative world brought to life through ambitious visual effects."
+    },
+    "The Shawshank Redemption": {
+        genre: "Drama",
+        release: "23 September 1994",
+        cast: "Tim Robbins, Morgan Freeman, Bob Gunton",
+        synopsis: "Two inmates form a lasting friendship while navigating life inside Shawshank prison.",
+        rating: "9.3/10",
+        review: "A moving drama about friendship, perseverance, and hope."
+    },
+    "Jurassic Park": {
+        genre: "Adventure / Sci-Fi",
+        release: "11 June 1993",
+        cast: "Sam Neill, Laura Dern, Jeff Goldblum",
+        synopsis: "A visit to a theme park featuring cloned dinosaurs turns dangerous when its security systems fail.",
+        rating: "8.2/10",
+        review: "A landmark adventure film that blends suspense, wonder, and groundbreaking effects."
+    }
+};
+
+function showDetails(title) {
+    const movie = movieDetails[title];
+
+    document.getElementById("dialog-title").textContent = title;
+
+    const content = document.getElementById("dialog-content");
+    content.replaceChildren();
+
+    [
+        ["Genre", movie.genre],
+        ["Release Date", movie.release],
+        ["Cast", movie.cast],
+        ["Synopsis", movie.synopsis],
+        ["Rating", movie.rating],
+        ["Critic Review (sample)", movie.review]
+    ].forEach(([label, value]) => {
+        const p = document.createElement("p");
+        const strong = document.createElement("strong");
+        strong.textContent = label + ": ";
+        p.append(strong, document.createTextNode(value));
+        content.appendChild(p);
+    });
+
+    document.getElementById("movie-dialog").showModal();
+}
+
+let selectedGenre = "All";
+
+function applyFilters() {
+    const query = document.getElementById("search").value
+        .trim().toLowerCase();
+
+    let visible = 0;
+
+    document.querySelectorAll(".movie-card").forEach(card => {
+        const matchesSearch =
+            card.dataset.title.includes(query) ||
+            card.dataset.genre.toLowerCase().includes(query);
+
+        const matchesGenre =
+            selectedGenre === "All" ||
+            card.dataset.genre.includes(selectedGenre);
+
+        const show = matchesSearch && matchesGenre;
+
+        card.style.display = show ? "block" : "none";
+
+        if (show) visible++;
+    });
+
+    document.getElementById("no-results").hidden = visible > 0;
+}
+
+function searchMovies() {
+    applyFilters();
+}
+
+document.getElementById("search").addEventListener("input", applyFilters);
+
+function filterMovies(genre, button) {
+    selectedGenre = genre;
+
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+        btn.classList.remove("active");
+    });
+
+    button.classList.add("active");
+    applyFilters();
+}
+</script>
+
+</body>
+</html>
